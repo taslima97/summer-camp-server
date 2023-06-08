@@ -29,11 +29,20 @@ async function run() {
     await client.connect();
 
 const classCollection = client.db('artandcraftdb').collection('classes');
+const cartCollection = client.db('artandcraftdb').collection('carts');
 
 
 app.get('/classes', async(req, res)=>{
     const result = await classCollection.find().toArray();
     res.send(result)
+})
+
+
+app.post('/carts', async(req, res)=>{
+  const item = req.body;
+  console.log(item);
+  const result = await cartCollection.insertOne(item);
+  res.send(result);
 })
 
 

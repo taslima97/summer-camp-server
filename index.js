@@ -28,8 +28,17 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
+const usersCollection = client.db('artandcraftdb').collection('users');
 const classCollection = client.db('artandcraftdb').collection('classes');
 const cartCollection = client.db('artandcraftdb').collection('carts');
+
+
+
+app.post('/users', async(req, res)=>{
+  const user = req.body;
+  const result = await usersCollection.insertOne(user);
+  res.send(result)
+})
 
 
 app.get('/classes', async(req, res)=>{

@@ -154,6 +154,13 @@ app.get('/classes', async(req, res)=>{
 })
 
 
+app.post('/classes', async(req, res)=>{
+  const newClass = req.body;
+  const result = await classCollection.insertOne(newClass);
+  res.send(result)
+})
+
+
 app.get('/carts', verifyJWT,  async(req, res)=>{
   const email = req.query.email;
   if (!email) {

@@ -157,6 +157,15 @@ app.get('/classes', async(req, res)=>{
 })
 
 
+app.get('/classes/:email', async(req, res)=>{
+  const email = req.params.email;
+  const query = {email: email};
+  const result = await classCollection.find(query).toArray();
+  res.send(result)
+})
+
+
+
 app.post('/classes', verifyJWT,  async(req, res)=>{
   const newClass = req.body;
   const result = await classCollection.insertOne(newClass);
@@ -187,6 +196,8 @@ app.post('/carts', async(req, res)=>{
   const result = await cartCollection.insertOne(item);
   res.send(result);
 })
+
+
 
 
 app.get('/payments/:email', async(req, res)=>{

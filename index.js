@@ -51,6 +51,7 @@ async function run() {
 const usersCollection = client.db('artandcraftdb').collection('users');
 const classCollection = client.db('artandcraftdb').collection('classes');
 const cartCollection = client.db('artandcraftdb').collection('carts');
+const paymentCollection = client.db('artandcraftdb').collection('payments');
 
 
 app.post('/jwt', (req, res)=>{
@@ -182,7 +183,7 @@ if (email !== decodedEmail) {
 
 app.post('/carts', async(req, res)=>{
   const item = req.body;
-  console.log(item);
+  // console.log(item);
   const result = await cartCollection.insertOne(item);
   res.send(result);
 })
@@ -190,7 +191,7 @@ app.post('/carts', async(req, res)=>{
 app.post('/create-payment-intent', verifyJWT, async(req, res)=>{
   const {price} = req.body;
    const amount = price * 100;
-   console.log(price, amount)
+  //  console.log(price, amount)
    const paymentIntent = await stripe.paymentIntents.create({
     amount: amount,
     currency: 'usd',
@@ -200,6 +201,14 @@ app.post('/create-payment-intent', verifyJWT, async(req, res)=>{
   clientSecret: paymentIntent.client_secret
  })
 })
+
+
+app.post('/payments', verifyJWT, async(req, res)=>{
+  const payment = req.body;
+  const result = await paymentCollection.insertOne(payment);
+  res.send(result)
+})
+
 
 
 app.delete('/carts/:id', async(req, res)=>{
